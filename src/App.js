@@ -4,18 +4,39 @@ import initialData from './initial-data';
 import Column from "./column";
 import {DragDropContext} from 'react-beautiful-dnd';
 import './App.css';
-import styled from 'styled-components';
+import axios from "axios";
 
-const Container = styled.div`
-  display: flex;
-`
+
 
 class App extends React.Component {
-  state = initialData
+  // "https://run.mocky.io/v3/e15d6b45-8507-499c-a39d-1f09cf84c62f"
+
+  state={
+    getFormFields: null    
+  }
+
+ 
+  
+
+  componentDidMount(){
+
+    axios.get('https://run.mocky.io/v3/e52b9ce4-0ded-4bc7-a5e6-3e07e50c7fff')
+    .then(response=>{
+      //console.log(response);
+      this.setState({
+        getFormFields: response.data
+      })
+    })
+    .catch(error=>{
+      //console.log(error);
+    })
+  }
 
   onDragEnd = result => {
     document.body.style.color = 'inherit';
     document.body.style.backgroundColor = 'inherit';
+
+    //console.log(result);
   
     const {destination, source, draggableId } = result;
   
@@ -27,55 +48,71 @@ class App extends React.Component {
       return;
     }
   
-    const start = this.state.columns[source.droppableId];
-    const finish = this.state.columns[destination.droppableId];
+    const start = this.state.getFormFields.columns[source.droppableId];
+    const finish = this.state.getFormFields.columns[destination.droppableId];
+
+    
   
-    if(start === finish) {
-      const newTaskIds = Array.from(start.taskIds);
-    newTaskIds.splice(source.index, 1);
-    newTaskIds.splice(destination.index, 0, draggableId);
-  
-    const newColumn = {
-      ...finish,
-      taskIds: newTaskIds,
+    if(start === finish) 
+    {
+        const newTaskIds = Array.from(start.formIds);
+        newTaskIds.splice(source.index, 1);
+        newTaskIds.splice(destination.index, 0, draggableId);
+        const newColumn = {
+          ...finish,
+          formIds: newTaskIds,
+        };
+        const newState= {
+          ...this.state.getFormFields,
+          columns:{
+            ...this.state.getFormFields.columns,
+            [newColumn.id]: newColumn,
+          }
+        }      
+        this.setState({
+          getFormFields : newState
+        });
+        return;  
+    }
+
+    // Moving from one list to another
+    const startFormIds = Array.from(start.formIds);   
+    startFormIds.splice(source.index, 1);
+    const newStart = {
+      ...start,
+      formIds: startFormIds,
     };
-  
+    const finishFormIds = Array.from(finish.formIds);
+    finishFormIds.splice(destination.index, 0, draggableId);
+    const newFinish = {
+      ...finish,
+      formIds: finishFormIds,
+    };    
+
     const newState = {
-      ...this.state,
+      ...this.state.getFormFields,
       columns: {
-        ...this.state.columns,
-        [newColumn.id]: newColumn,
+        ...this.state.getFormFields.columns,
+        [newStart.id]: newStart,
+        [newFinish.id]: newFinish,
       },
     };
+
+    this.setState({
+      getFormFields : newState
+    });
+
+
+    
+
+    
+   
+    
+    
   
-    this.setState(newState);
-    return;  
-  }
+ 
   
-  // Moving from one list to another
-  const startTaskIds = Array.from(start.taskIds);
-  startTaskIds.splice(source.index, 1);
-  const newStart = {
-    ...start,
-    taskIds: startTaskIds,
-  };
   
-  const finishTaskIds = Array.from(finish.taskIds);
-  finishTaskIds.splice(destination.index, 0, draggableId);
-  const newFinish = {
-    ...finish,
-    taskIds: finishTaskIds,
-  };
-  
-  const newState = {
-    ...this.state,
-    columns: {
-      ...this.state.columns,
-      [newStart.id]: newStart,
-      [newFinish.id]: newFinish,
-    },
-  };
-  this.setState(newState);
   };
 
 
@@ -88,26 +125,46 @@ class App extends React.Component {
 
     //TBD:  create the json from fields data and save in in require format
 
-    console.log(fields);
+   // console.log(fields);
 
     
   }
 
   render() {
+    
+    const { getFormFields } = this.state;
+
+    // console.log("[App redner]");
+    // console.log(getFormFields);
+
+    let setDragParent;
+
+    if(getFormFields)
+    {
+      setDragParent=  <div>
+                        <DragDropContext onDragEnd={this.onDragEnd}>
+                          <div className="setbox">
+                            {getFormFields.columnOrder.map(columnId => {
+                              const column = getFormFields.columns[columnId];
+                              
+                              const tasks = column.formIds.map(fieldId => getFormFields.field[fieldId]);
+                              
+                              return <Column key={column.id} column={column} tasks={tasks} />;
+                            })}
+                          </div>
+                        </DragDropContext>
+                        <button onClick={this.finalFormJson}>Submit</button>
+                      </div>;
+    }
+    else
+    {
+      setDragParent = <div>Loading</div>
+    }
+
+
     return (
       <div>
-           <DragDropContext onDragEnd={this.onDragEnd}>
-            <Container>
-              {this.state.columnOrder.map(columnId => {
-                const column = this.state.columns[columnId];
-                const tasks = column.taskIds.map(taskId => this.state.tasks[taskId]);
-                
-                return <Column key={column.id} column={column} tasks={tasks} />;
-              })}
-            </Container>
-          </DragDropContext>
-
-          <button onClick={this.finalFormJson}>Submit</button>
+          {setDragParent}
       </div>
      
     )
