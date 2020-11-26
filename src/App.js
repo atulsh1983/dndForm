@@ -101,17 +101,6 @@ class App extends React.Component {
     this.setState({
       getFormFields : newState
     });
-
-
-    
-
-    
-   
-    
-    
-  
- 
-  
   
   };
 
@@ -125,7 +114,24 @@ class App extends React.Component {
 
     //TBD:  create the json from fields data and save in in require format
 
-   // console.log(fields);
+   //console.log(fields);
+
+   let fieldObj=[];
+
+   if(fields.length>0)
+   {
+     for(let i=0;i<fields.length;i++)
+     {
+        //console.log(fields[i].getAttribute('data-getfieldid'));  
+        fieldObj.push({
+          'type' : fields[i].getAttribute('data-getfieldid'),
+          'required' : "Y"
+        })
+     }
+
+     //TBD: data output to be send in API 
+     console.log(fieldObj)
+   }
 
     
   }
