@@ -1,3 +1,22 @@
 .setbox{
   display: flex;
 }
+.fullw{
+  width: 100%;
+}
+.txtc{
+  text-align: center;
+}
+.sethead{
+  background-color: aliceblue;line-height: 39px;font-size: 23px;
+}
+.mt5{
+  margin-top: 5px;
+}
+.setm{
+  align-items: baseline;
+}
+
+.bg1{
+  background-color: #f0f3f5;
+}
