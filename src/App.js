@@ -7,7 +7,7 @@ import {
   Link
 } from "react-router-dom";
 import './App.css';
-import DragUI from "./DragUI";
+import DragUI from "./component/FlowOne/DragUI";
 import Preview from './Preview';
 
 

@@ -41,6 +41,10 @@ class DragUI extends React.Component {
     //console.log(result);
   
     const {destination, source, draggableId } = result;
+
+    //console.log("[destination]", destination);
+    //console.log("[source]", source);
+    //console.log("[draggableId]", draggableId)
   
     if(!destination) {
       return;
@@ -159,7 +163,7 @@ class DragUI extends React.Component {
     // console.log("[App redner]");
     // console.log(getFormFields);
 
-    let setDragParent;
+    let setDragParent; 
 
     if(getFormFields)
     {

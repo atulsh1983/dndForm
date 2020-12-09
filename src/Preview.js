@@ -22,10 +22,10 @@ class Preview extends Component{
               "layoutType" : "d1",
               "fieldData" :[
              {
-               "type" : "Sender_Name",
-               "required": "y",
-               "field": "input",
-               "label":"from"
+                "type" : "Sender_Name",
+                "required": "y",
+                "field": "input",
+                "label":"from"
              },
              {
                "type" : "Sender_GSTIN",
@@ -113,7 +113,7 @@ class Preview extends Component{
         
         return(
             <div>
-                <form>
+                <form id="formRender">
                     {headerrenderForm}
                 </form>
             </div>
