@@ -13,6 +13,7 @@
 .mt5{
   margin-top: 5px;
 }
+.m10{margin-top: 10px;}
 .setm{
   align-items: baseline;
 }
@@ -20,9 +21,13 @@
 .bg1{
   background-color: #f0f3f5;
 }
+.bg2{
+  background-color: aliceblue;
+}
 .pad1{
   padding: 10px;
 }
+
 
 #formRender label{
   width: 100px;
@@ -30,8 +35,18 @@
 
 .dispt{display: table;}
 .setequal{table-layout: fixed;}
-.disptc{display: table-cell;}
+.disptc{display: table-cell;padding:10px; width: 33%;}
 .vmid{vertical-align: middle;}
+.vhid{visibility: hidden;}
+.setemp{border: 1px dotted lightgrey;
+  width:200px;
+  border-radius: 2px;
+  padding: 8px;
+  margin-bottom: 8px;background-color: #eee;}
+.txtc{text-align: center;} 
+ 
+
+#mainCont{display: flex;}
 
 
 
@@ -39,11 +54,23 @@
   margin: 8px;
   border: 1px solid lightgrey;
   border-radius: 2px;
-  width: 220px;
+  width: 17%;
   display: flex;
   flex-direction: column;
   padding:5px
 }
+
+.rightpanel{
+  margin: 8px;
+  border: 1px solid lightgrey;
+  border-radius: 2px;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  padding:5px
+}
+
+
 
 .box{
   border: 1px solid #eee;

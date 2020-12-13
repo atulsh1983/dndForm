@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import FieldsName from "./FieldsName";
 import styled from 'styled-components';
-import Task from "../../task";
 import "../../App.css";
 
 
@@ -29,14 +28,14 @@ export default class LeftPanel extends React.Component{
             <div className="leftpanel">
 
                     <Droppable                         
-                        droppableId="column-1">
+                        droppableId="column_A">
                         {(provided, snapshot) => 
                             <TaskList
                             ref={provided.innerRef}
                             {...provided.droppableProps}
                             isDraggingOver={snapshot.isDraggingOver}
                             >
-                                {dataValues.LayoutOne.headerField.map((task, index) => (
+                                {dataValues.map((task, index) => (
                                 <FieldsName keyid={task.id} key={task.id} val={task.label} index={index} />
                                 ))}
                             {provided.placeholder}

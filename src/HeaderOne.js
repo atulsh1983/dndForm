@@ -27,42 +27,42 @@ export default class HeaderOne extends Component{
                 console.log(val);
                 console.log(index);
 
-                if(val.type=='Sender_Name')
+                if(val.type==='Sender_Name')
                 {
                     SenderName = <div className="setbox pad1">
                         <label>From:</label>
                         <input type="text"/>                        
                     </div>
                 }
-                if(val.type=='Sender_Phone')
+                if(val.type==='Sender_Phone')
                 {
                     SenderPhone = <div className="setbox pad1">
                         <label>Phone:</label>
                         <input type="text"/>                        
                     </div>
                 }
-                if(val.type=='Invoice_Number')
+                if(val.type==='Invoice_Number')
                 {
                     invoiceUNum = <div className="setbox pad1">
                         <label>Invoice No.:</label>
                         <input type="text"/>                        
                     </div>
                 }
-                if(val.type=='Sender_GSTIN')
+                if(val.type==='Sender_GSTIN')
                 {
                     SenderGSTIN = <div className="setbox pad1">
                         <label>GSTIN NO:</label>
                         <input type="text"/>                        
                     </div>
                 }
-                if(val.type=='Bill_Number')
+                if(val.type==='Bill_Number')
                 {
                     billNum = <div className="setbox pad1">
                         <label>Bill No.:</label>
                         <input type="text"/>                        
                     </div>
                 }                
-                if(val.type=='Bill_date')
+                if(val.type==='Bill_date')
                 {
                     billDate = <div className="setbox pad1">
                         <label>Bill Date:</label>
@@ -70,7 +70,7 @@ export default class HeaderOne extends Component{
                     </div>
                 }
 
-                if(val.type=='Rec_Name')
+                if(val.type==='Rec_Name')
                 {
                     recname = <div className="setbox pad1">
                         <label>To:</label>
@@ -78,14 +78,14 @@ export default class HeaderOne extends Component{
                     </div>
                 }
                
-                if(val.type=='Rec_Phone')
+                if(val.type==='Rec_Phone')
                 {
                     recphn = <div className="setbox pad1">
                         <label>Phone:</label>
                         <input type="text"/>                        
                     </div>
                 }
-                if(val.type=='Rec_GSTIN')
+                if(val.type==='Rec_GSTIN')
                 {
                     recGSTIN = <div className="setbox pad1">
                         <label>GSTIN No.:</label>

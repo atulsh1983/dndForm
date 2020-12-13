@@ -3,6 +3,7 @@ import {DragDropContext} from 'react-beautiful-dnd';
 import '../../App.css';
 import axios from "axios";
 import LeftPanel from "./LeftPanel";
+import RightPanel from "./RightPanel";
 
 
 class DragUI extends React.Component{
@@ -10,7 +11,14 @@ class DragUI extends React.Component{
 
     state={
         getFormFields: null ,
-        fieldSaved: null   
+        fieldSaved: null,
+        "column_1":[],
+        "column_2":[],
+        "column_3":[],
+        "column_4":[],
+        "column_5":[],
+        "column_6":[],
+        "columnOrder": [ "column_1", "column_2", "column_3", "column_4", "column_5", "column_6"]
     }
 
 
@@ -35,38 +43,24 @@ class DragUI extends React.Component{
 
 
         const {destination, source, draggableId } = result;
-
-        //console.log("[destination]", destination);
-        //console.log("[source]", source);
-        //console.log("[draggableId]", draggableId);
+        console.log("[source]", source);
+        console.log("[destination]", destination);        
+        console.log("[draggableId]", draggableId);
 
         if(!destination) {
             return;
         }
-        
         if (destination.droppableId === source.droppableId && destination.index === source.index) {
             return;
         }
-
         // same block dnd logic
         if(destination.droppableId === source.droppableId)
         {
-            console.log(this.state.getFormFields);
-
             const newOrder = Array.from(this.state.getFormFields.LayoutOne.headerField);
-
             let valueObj = this.state.getFormFields.LayoutOne.headerField[source.index];
-
-            //console.log(valueObj);
-
-            //console.log(newOrder);
-
             newOrder.splice(source.index, 1);
             newOrder.splice(destination.index, 0,valueObj);
             
-            console.log("[After]");
-            console.log(newOrder);
-
             const newState = {
                 ...this.state.getFormFields,
                 LayoutOne:{
@@ -75,16 +69,69 @@ class DragUI extends React.Component{
                 }
             }
 
-            console.log("[new state]");
-            console.log(newState);
-
             this.setState({
                 getFormFields: newState
-            })
+            });
 
-
-
+            return;
         }
+
+        // Moving from one list to another
+        const newOrder_2 = Array.from(this.state.getFormFields.LayoutOne.headerField);
+        let valueObj_2 = this.state.getFormFields.LayoutOne.headerField[source.index];
+        newOrder_2.splice(source.index, 1);
+        
+
+        let newDestVal;
+
+        //console.log(destination.droppableId);
+        //console.log(this.state[destination.droppableId]);
+
+        const copyColumn = Array.from(this.state[destination.droppableId]);
+
+        //console.log("[copyColumn before]", copyColumn);
+
+        copyColumn.splice(destination.index, 0,valueObj_2);
+
+
+        //console.log("[copyColumn after]", copyColumn);
+
+        let columID = destination.droppableId;
+
+        const newState_2 = {
+            ...this.state,
+            LayoutOne:{
+                ...this.state.getFormFields.LayoutOne,
+                headerField: newOrder_2,
+                
+            }
+        };
+
+        // const newState_2 = {
+        //     ...this.state,
+        //     LayoutOne:{
+        //         ...this.state.getFormFields.LayoutOne,
+        //         headerField: newOrder_2,
+                
+        //     }
+        // };
+
+        // const newState_3 = {
+        //     ...this.state,
+        //     [destination.droppableId]: copyColumn
+        // }
+
+        //console.log(newState_2);
+        //console.log(newState_3);
+        // console.log(valueObj_2);
+        this.setState({
+            getFormFields: newState_2,
+            [destination.droppableId] : copyColumn
+        });
+
+
+        
+
 
     }
 
@@ -94,14 +141,23 @@ class DragUI extends React.Component{
 
         let setUILeft=null;
 
-        const { getFormFields } =  this.state;
+        const { getFormFields,toField, column_1, column_2, column_3, column_4, column_5, column_6, columnOrder} =  this.state;
 
         if(getFormFields)
         {
             
             setUILeft = <div id="mainCont">
                             <DragDropContext onDragEnd={this.onDragEnd}>
-                                <LeftPanel dataValues={getFormFields}/>
+                                <LeftPanel dataValues={getFormFields.LayoutOne.headerField}/>
+                                <RightPanel 
+                                    column_1={column_1}
+                                    column_2={column_2}
+                                    column_3={column_3}
+                                    column_4={column_4}
+                                    column_5={column_5}
+                                    column_6={column_6}
+                                    columnOrder={columnOrder}
+                                    />
                             </DragDropContext>
                         </div>
         }
