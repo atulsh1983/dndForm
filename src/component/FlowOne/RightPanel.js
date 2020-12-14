@@ -17,15 +17,17 @@ export default class RightPanel extends React.Component{
     render(){
         const {column_1, column_2, column_3, column_4, column_5, column_6, columnOrder} = this.props;
 
-        //  console.log(this.props);
+        console.log(this.props);
 
         let SectionOne = columnOrder.map((val,index)=>{
             if(index<3)
             {
+                console.log("[map value]");
+                console.log(index);
+                console.log(this.props[val]);
                 let newID = "column_"+index;
-                console.log(val);
                 return(
-                        <div key={index} className="disptc">
+                        <div key={index} className="disptc vtop">
                             <Droppable                         
                                 droppableId={val}>
                                 {(provided, snapshot) => 
@@ -34,7 +36,9 @@ export default class RightPanel extends React.Component{
                                     {...provided.droppableProps}
                                     isDraggingOver={snapshot.isDraggingOver}
                                     >
-                                       dfdf
+                                        {this.props[val].map((task, index) => (
+                                            <FieldsName keyid={task.id} key={task.id} val={task.label} index={index} />
+                                        ))}
                                     {provided.placeholder}
                                     </TaskList>
                                 }

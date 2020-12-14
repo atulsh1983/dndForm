@@ -37,6 +37,7 @@
 .setequal{table-layout: fixed;}
 .disptc{display: table-cell;padding:10px; width: 33%;}
 .vmid{vertical-align: middle;}
+.vtop{vertical-align: top;}
 .vhid{visibility: hidden;}
 .setemp{border: 1px dotted lightgrey;
   width:200px;

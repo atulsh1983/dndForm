@@ -77,58 +77,114 @@ class DragUI extends React.Component{
         }
 
         // Moving from one list to another
-        const newOrder_2 = Array.from(this.state.getFormFields.LayoutOne.headerField);
-        let valueObj_2 = this.state.getFormFields.LayoutOne.headerField[source.index];
-        newOrder_2.splice(source.index, 1);
+
+        let newOrderArr_2, valueObj_2, dest_Arr, newDest_Arr, newSource_Arr;
+
+        //----if the values are dropped back into main column
+        if(destination.droppableId==='column_A')
+        {
+            //----copy the souce array----         
+            newOrderArr_2 = Array.from(this.state[source.droppableId]);
+
+            //----find the value dropped----
+            valueObj_2 = newOrderArr_2[source.index];
+
+            //----take out value from soruce array----
+            newOrderArr_2.splice(source.index, 1);
+
+            //----make copy of destination array in this case coulmn_A----
+            dest_Arr = Array.from(this.state.getFormFields.LayoutOne.headerField)
+
+            //----insert the value in destination array----
+            dest_Arr.splice(destination.index, 0,valueObj_2);
+
+            //----copy the destination values in new varaible
+            newDest_Arr = {
+                ...this.state,
+                LayoutOne:{
+                    ...this.state.getFormFields.LayoutOne,
+                    headerField: dest_Arr,                    
+                }
+            };   
+
+            //----update the state with new values----
+            this.setState({
+                getFormFields: newDest_Arr,
+                [source.droppableId] : newOrderArr_2
+            });
+    
+            
+            return;
+
+        }
+
+        else if(source.droppableId==='column_A')
+        {
+            //----copy the souce array----
+            newOrderArr_2 = Array.from(this.state.getFormFields.LayoutOne.headerField);
+
+            //----find the value dropped----
+            valueObj_2 = this.state.getFormFields.LayoutOne.headerField[source.index];
+
+            //----take out value from soruce array----
+            newOrderArr_2.splice(source.index, 1);
+
+            //----make copy of destination array----
+            dest_Arr = Array.from(this.state[destination.droppableId]);
+
+            //----insert the value in destination array----
+            dest_Arr.splice(destination.index, 0,valueObj_2);
+
+            //----copy the destination values in new varaible
+            const newState_2 = {
+                ...this.state,
+                LayoutOne:{
+                    ...this.state.getFormFields.LayoutOne,
+                    headerField: newOrderArr_2,
+                    
+                }
+            };  
+            
+             this.setState({
+                getFormFields: newState_2,
+                [destination.droppableId] : dest_Arr
+            });
+
+            return;
+            
+        }
+        else if(source.droppableId!=='column_A' && destination.droppableId!=='column_A')
+        {
+            //----copy the souce array----
+            newOrderArr_2 = Array.from(this.state[source.droppableId]);;
+
+            //----find the value dropped----
+            valueObj_2 = newOrderArr_2[source.index];
+
+            //----take out value from soruce array----
+            newOrderArr_2.splice(source.index, 1);
+
+            //----make copy of destination array----
+            dest_Arr = Array.from(this.state[destination.droppableId]);
+
+            //----insert the value in destination array----
+            dest_Arr.splice(destination.index, 0,valueObj_2);
+
+           
+            
+             this.setState({
+                [source.droppableId]: newOrderArr_2,
+                [destination.droppableId] : dest_Arr
+            });
+
+            return;
+            
+        }
+
+               
         
-
-        let newDestVal;
-
-        //console.log(destination.droppableId);
-        //console.log(this.state[destination.droppableId]);
-
-        const copyColumn = Array.from(this.state[destination.droppableId]);
-
-        //console.log("[copyColumn before]", copyColumn);
-
-        copyColumn.splice(destination.index, 0,valueObj_2);
-
-
-        //console.log("[copyColumn after]", copyColumn);
-
-        let columID = destination.droppableId;
-
-        const newState_2 = {
-            ...this.state,
-            LayoutOne:{
-                ...this.state.getFormFields.LayoutOne,
-                headerField: newOrder_2,
-                
-            }
-        };
-
-        // const newState_2 = {
-        //     ...this.state,
-        //     LayoutOne:{
-        //         ...this.state.getFormFields.LayoutOne,
-        //         headerField: newOrder_2,
-                
-        //     }
-        // };
-
-        // const newState_3 = {
-        //     ...this.state,
-        //     [destination.droppableId]: copyColumn
-        // }
-
-        //console.log(newState_2);
-        //console.log(newState_3);
-        // console.log(valueObj_2);
-        this.setState({
-            getFormFields: newState_2,
-            [destination.droppableId] : copyColumn
-        });
-
+       
+        
 
         
 
