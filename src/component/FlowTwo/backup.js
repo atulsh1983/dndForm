@@ -5,20 +5,21 @@ import axios from "axios";
 import LeftPanel from "./LeftPanel";
 import RightPanel from "./RightPanel";
 
-
 class DragUI extends React.Component{
 
 
     state={
-        getFormFields: null ,
-        fieldSaved: null,
-        "column_1":[],
-        "column_2":[],
-        "column_3":[],
-        "column_4":[],
-        "column_5":[],
-        "column_6":[],
-        "columnOrder": [ "column_1", "column_2", "column_3", "column_4", "column_5", "column_6"]
+        "getFormFields": null ,
+        "fieldSaved": null,
+        "headerSection":[
+            {"column_0":[]},
+            {"column_1":[]},
+            {"column_2":[]},
+            {"column_3":[]},
+            {"column_4":[]},
+            {"column_5":[]}
+        ]
+       
     }
 
 
@@ -43,9 +44,9 @@ class DragUI extends React.Component{
 
 
         const {destination, source, draggableId } = result;
-        //console.log("[source]", source);
-        //console.log("[destination]", destination);        
-        //console.log("[draggableId]", draggableId);
+        console.log("[source]", source);
+        console.log("[destination]", destination);        
+        console.log("[draggableId]", draggableId);
 
         if(!destination) {
             return;
@@ -83,6 +84,7 @@ class DragUI extends React.Component{
         //----if the values are dropped back into main column
         if(destination.droppableId==='column_A')
         {
+            console.log("change 1");
             //----copy the souce array----         
             newOrderArr_2 = Array.from(this.state[source.droppableId]);
 
@@ -120,6 +122,7 @@ class DragUI extends React.Component{
 
         else if(source.droppableId==='column_A')
         {
+            console.log("change 2");
             //----copy the souce array----
             newOrderArr_2 = Array.from(this.state.getFormFields.LayoutOne.headerField);
 
@@ -128,14 +131,38 @@ class DragUI extends React.Component{
 
             //----take out value from soruce array----
             newOrderArr_2.splice(source.index, 1);
-
+            
             //----make copy of destination array----
-            dest_Arr = Array.from(this.state[destination.droppableId]);
+            //dest_Arr = Array.from(this.state[destination.droppableId]);
 
-            //----insert the value in destination array----
-            dest_Arr.splice(destination.index, 0,valueObj_2);
+            let b = JSON.parse(JSON.stringify(this.state.headerSection));
+            //console.log("[b value before]");
+            //console.log(b);
 
-            //----copy the destination values in new varaible
+            let indexofColumn, coulmnName;
+
+            for (let key in b) {
+                let keys = Object.keys(b[key]);
+                if(keys[0]===destination.droppableId)
+                {
+                    indexofColumn = key;
+                    //console.log(keys[0]);
+
+                }
+                
+            }
+
+            //console.log("[indexofColumn]", indexofColumn);
+            //console.log(b[indexofColumn][destination.droppableId]);
+
+            b[indexofColumn][destination.droppableId].splice(destination.index, 0,valueObj_2);
+
+            //console.log("[value of b after]");
+            //console.log(b);
+            //console.log("-----");
+            //console.log(this.state.headerSection);
+
+             //----copy the destination values in new varaible
             const newState_2 = {
                 ...this.state,
                 LayoutOne:{
@@ -144,17 +171,75 @@ class DragUI extends React.Component{
                     
                 }
             };  
+
+
             
-             this.setState({
-                getFormFields: newState_2,
-                [destination.droppableId] : dest_Arr
-            });
+
+
+
+
+           
+           
+           
+           
+           
+            //let b = JSON.parse(JSON.stringify(this.state.headerSection));
+            //console.log(b);
+            //console.log(b[0]["column_1"].push('apple'));
+
+            
+
+            
+
+            // for(let i=0;i<b.length;i++)
+            // {
+                
+            //     let keys = Object.keys(b[i]);     
+                           
+            //     if(keys[0]===destination.droppableId)
+            //     {
+            //         console.log("in12");
+                   
+            //         b[i][keys[0]].splice(destination.index, 0,valueObj_2);
+                    
+            //     }
+            //     console.log(b[i]);
+
+            // }
+            
+            // console.log(b);
+            // console.log("---------");
+            
+
+            // console.log(this.state.headerSection);
+            // console.log("----------");
+
+       
+
+            // //----insert the value in destination array----
+            // dest_Arr.splice(destination.index, 0,valueObj_2);
+
+            // //----copy the destination values in new varaible
+            // const newState_2 = {
+            //     ...this.state,
+            //     LayoutOne:{
+            //         ...this.state.getFormFields.LayoutOne,
+            //         headerField: newOrderArr_2,
+                    
+            //     }
+            // };  
+            
+            //  this.setState({
+            //     getFormFields: newState_2,
+            //     [destination.droppableId] : dest_Arr
+            // });
 
             return;
             
         }
         else if(source.droppableId!=='column_A' && destination.droppableId!=='column_A')
         {
+            console.log("change 3");
             //----copy the souce array----
             newOrderArr_2 = Array.from(this.state[source.droppableId]);;
 
@@ -197,7 +282,7 @@ class DragUI extends React.Component{
 
         let setUILeft=null;
 
-        const { getFormFields,toField, column_1, column_2, column_3, column_4, column_5, column_6, columnOrder} =  this.state;
+        const { getFormFields,toField, headerSection } =  this.state;
 
         if(getFormFields)
         {
@@ -205,15 +290,7 @@ class DragUI extends React.Component{
             setUILeft = <div id="mainCont">
                             <DragDropContext onDragEnd={this.onDragEnd}>
                                 <LeftPanel dataValues={getFormFields.LayoutOne.headerField}/>
-                                <RightPanel 
-                                    column_1={column_1}
-                                    column_2={column_2}
-                                    column_3={column_3}
-                                    column_4={column_4}
-                                    column_5={column_5}
-                                    column_6={column_6}
-                                    columnOrder={columnOrder}
-                                    />
+                                <RightPanel header={headerSection}/>
                             </DragDropContext>
                         </div>
         }
