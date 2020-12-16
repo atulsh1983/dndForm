@@ -44,8 +44,8 @@ class DragUI extends React.Component{
 
 
         const {destination, source, draggableId } = result;
-        console.log("[source]", source);
-        console.log("[destination]", destination);        
+        //console.log("[source]", source);
+        //console.log("[destination]", destination);        
         //console.log("[draggableId]", draggableId);
 
         if(!destination) {
@@ -90,7 +90,9 @@ class DragUI extends React.Component{
 
             let b = JSON.parse(JSON.stringify(this.state.headerSection));
 
-            let sourceIndex, valueObj_2;
+            //console.log(b);
+
+            let sourceIndex;
 
             for (let key in b) {
                 let keys = Object.keys(b[key]);               
@@ -100,21 +102,26 @@ class DragUI extends React.Component{
                 }                           
             }
 
+            //console.log("[sourceIndex]", sourceIndex);
+
+            valueObj_2 = b[sourceIndex][source.droppableId][source.index];           
+
             b[sourceIndex][source.droppableId].splice(source.index, 1);
 
-            //valueObj_2 = b[sourceIndex][source.droppableId][source.index];
+           
 
-            //let newOrder_2 = Array.from(this.state.getFormFields.LayoutOne.headerField);
+            
+            let newOrder_2 = Array.from(this.state.getFormFields.LayoutOne.headerField);
 
-            //newOrder_2.splice(destination.index, 0,valueObj_2);
+            newOrder_2.splice(destination.index, 0,valueObj_2);
 
-            // const newState_2 = {
-            //     ...this.state.getFormFields,
-            //     LayoutOne:{
-            //         ...this.state.getFormFields.LayoutOne,
-            //         headerField: newOrder_2
-            //     }
-            // }
+            let newState_2 = {
+                ...this.state.getFormFields,
+                LayoutOne:{
+                    ...this.state.getFormFields.LayoutOne,
+                    headerField: newOrder_2
+                }
+            }
             
 
             // console.log("[after] b");
@@ -123,10 +130,10 @@ class DragUI extends React.Component{
             // console.log(newOrder_2);
 
             //----update the state with new values----
-            // this.setState({
-            //     getFormFields: newState_2,
-            //     headerSection:b
-            // });
+            this.setState({
+                getFormFields: newState_2,
+                headerSection:b
+            });
     
             
             return;
